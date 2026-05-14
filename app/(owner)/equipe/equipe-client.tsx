@@ -48,18 +48,11 @@ export default function EquipeClient({ empresaId }: Props) {
   const supabase = createClient()
 
   useEffect(() => {
+    const client = createClient()
     async function load() {
       const [{ data: funcs }, { data: grps }] = await Promise.all([
-        supabase
-          .from('funcionarios')
-          .select('*')
-          .eq('empresa_id', empresaId)
-          .order('created_at'),
-        supabase
-          .from('grupos')
-          .select('*')
-          .eq('empresa_id', empresaId)
-          .order('created_at'),
+        client.from('funcionarios').select('*').eq('empresa_id', empresaId).order('created_at'),
+        client.from('grupos').select('*').eq('empresa_id', empresaId).order('created_at'),
       ])
       setFuncionarios(funcs ?? [])
       setGrupos(grps ?? [])
