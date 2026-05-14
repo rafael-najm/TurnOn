@@ -16,11 +16,20 @@ export function useEmpresa() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.replace('/login'); return }
 
-      const { data } = await supabase
+      let { data } = await supabase
         .from('empresas')
         .select('*')
         .eq('owner_id', user.id)
         .single()
+
+      if (!data) {
+        const { data: created } = await supabase
+          .from('empresas')
+          .insert({ nome: user.email?.split('@')[0] ?? 'Minha Empresa', owner_id: user.id })
+          .select()
+          .single()
+        data = created
+      }
 
       if (!data) { router.replace('/login'); return }
       setEmpresa(data)
