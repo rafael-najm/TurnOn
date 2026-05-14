@@ -3,6 +3,12 @@ export type Empresa = {
   nome: string
   owner_id: string
   created_at: string
+  horario_manha_inicio?: string
+  horario_manha_fim?: string
+  horario_tarde_inicio?: string
+  horario_tarde_fim?: string
+  horario_noite_inicio?: string
+  horario_noite_fim?: string
 }
 
 export type Funcionario = {
@@ -11,6 +17,7 @@ export type Funcionario = {
   nome: string
   token: string
   created_at: string
+  grupo_id: string | null
 }
 
 export type Tarefa = {
@@ -28,6 +35,31 @@ export type Execucao = {
   funcionario_id: string
   feito_em: string
   data_turno: string
+}
+
+export type Andamento = {
+  id: string
+  tarefa_id: string
+  funcionario_id: string
+  data_turno: string
+  iniciado_em: string
+}
+
+export type Escala = {
+  id: string
+  empresa_id: string
+  funcionario_id: string
+  turno: 'manha' | 'tarde' | 'noite'
+  data: string
+  created_at: string
+}
+
+export type Grupo = {
+  id: string
+  empresa_id: string
+  nome: string
+  cor: string
+  created_at: string
 }
 
 export type TurnoLabel = 'manha' | 'tarde' | 'noite' | 'todos'
