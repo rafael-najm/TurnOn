@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
-import { type Tarefa, type Andamento, type Funcionario, TURNO_LABELS } from '@/lib/types'
+import { type Tarefa, type Andamento, TURNO_LABELS } from '@/lib/types'
 
 type ExecucaoWithFuncionario = {
   id: string
