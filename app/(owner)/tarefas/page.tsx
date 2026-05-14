@@ -1,26 +1,14 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useEmpresa } from '@/hooks/use-empresa'
 import TarefasClient from './tarefas-client'
 
-export default async function TarefasPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+export default function TarefasPage() {
+  const { empresa, loading } = useEmpresa()
 
-  const { data: empresa } = await supabase
-    .from('empresas')
-    .select('id')
-    .eq('owner_id', user.id)
-    .single()
+  if (loading || !empresa) {
+    return <div className="py-16 text-center text-sm text-muted-foreground">Carregando...</div>
+  }
 
-  if (!empresa) redirect('/dashboard')
-
-  const { data: tarefas } = await supabase
-    .from('tarefas')
-    .select('*')
-    .eq('empresa_id', empresa.id)
-    .order('turno')
-    .order('created_at')
-
-  return <TarefasClient empresaId={empresa.id} initialTarefas={tarefas ?? []} />
+  return <TarefasClient empresaId={empresa.id} initialTarefas={[]} />
 }
