@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,12 +15,18 @@ type Props = {
 }
 
 function getBaseUrl() {
-  if (typeof window !== 'undefined') return window.location.origin
+  if (typeof window !== 'undefined') return window.location.origin + (window.location.pathname.startsWith('/TurnOn') ? '/TurnOn' : '')
   return ''
 }
 
 export default function EquipeClient({ empresaId, initialFuncionarios }: Props) {
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>(initialFuncionarios)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.from('funcionarios').select('*').eq('empresa_id', empresaId).order('created_at')
+      .then(({ data }) => { if (data) setFuncionarios(data) })
+  }, [empresaId])
   const [nome, setNome] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -117,7 +123,7 @@ export default function EquipeClient({ empresaId, initialFuncionarios }: Props) 
       ) : (
         <div className="space-y-4">
           {funcionarios.map((func) => {
-            const link = `${baseUrl}/turno/${func.token}`
+            const link = `${baseUrl}/turno/?token=${func.token}`
             return (
               <div key={func.id} className="border border-border rounded-lg p-4">
                 <div className="flex items-start justify-between gap-4">

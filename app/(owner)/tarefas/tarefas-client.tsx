@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -25,6 +25,11 @@ export default function TarefasClient({ empresaId, initialTarefas }: Props) {
   const [error, setError] = useState('')
 
   const supabase = createClient()
+
+  useEffect(() => {
+    supabase.from('tarefas').select('*').eq('empresa_id', empresaId).order('turno').order('created_at')
+      .then(({ data }) => { if (data) setTarefas(data) })
+  }, [empresaId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault()

@@ -1,25 +1,14 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useEmpresa } from '@/hooks/use-empresa'
 import EquipeClient from './equipe-client'
 
-export default async function EquipePage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+export default function EquipePage() {
+  const { empresa, loading } = useEmpresa()
 
-  const { data: empresa } = await supabase
-    .from('empresas')
-    .select('id')
-    .eq('owner_id', user.id)
-    .single()
+  if (loading || !empresa) {
+    return <div className="py-16 text-center text-sm text-muted-foreground">Carregando...</div>
+  }
 
-  if (!empresa) redirect('/dashboard')
-
-  const { data: funcionarios } = await supabase
-    .from('funcionarios')
-    .select('*')
-    .eq('empresa_id', empresa.id)
-    .order('created_at')
-
-  return <EquipeClient empresaId={empresa.id} initialFuncionarios={funcionarios ?? []} />
+  return <EquipeClient empresaId={empresa.id} initialFuncionarios={[]} />
 }
