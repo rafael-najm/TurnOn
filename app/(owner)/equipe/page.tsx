@@ -10,5 +10,5 @@ export default function EquipePage() {
     return <div className="py-16 text-center text-sm text-muted-foreground">Carregando...</div>
   }
 
-  return <EquipeClient empresaId={empresa.id} initialFuncionarios={[]} />
+  return <EquipeClient empresaId={empresa.id} />
 }

@@ -117,7 +117,7 @@ export default function EscalaPage() {
     const supabase = createClient()
     const { data, error } = await supabase
       .from('escalas')
-      .insert({ empresa_id: empresa.id, funcionario_id: funcionarioId, turno, data })
+      .insert({ empresa_id: empresa.id, funcionario_id: funcionarioId, turno, data: date })
       .select()
       .single()
 
