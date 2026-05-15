@@ -32,6 +32,12 @@ export function useEmpresa() {
       }
 
       if (!data) { router.replace('/login'); return }
+
+      if (!data.onboarding_concluido) {
+        router.replace('/onboarding')
+        return
+      }
+
       setEmpresa(data)
       setLoading(false)
     }

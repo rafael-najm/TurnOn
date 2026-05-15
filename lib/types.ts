@@ -9,6 +9,7 @@ export type Empresa = {
   horario_tarde_fim?: string
   horario_noite_inicio?: string
   horario_noite_fim?: string
+  onboarding_concluido?: boolean
 }
 
 export type Funcionario = {
